@@ -6,6 +6,13 @@
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }
+    },
+    "NatsSubscriber": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
     }
   }
 }

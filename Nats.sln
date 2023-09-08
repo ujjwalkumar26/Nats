@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "Contracts\Contracts\Contracts.csproj", "{66AE5E0E-DE16-4AB5-8ED5-A5FFE8097D45}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NatsSubsciption", "NatsSubsciption", "{59FDDC32-CA35-4CCA-8D2E-6508FF12ABA7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NatsSubscriber", "NatsSubscription\NatsSubscriber.csproj", "{4283DFF9-BDF9-4075-B66F-12DE2B022E4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +36,10 @@ Global
 		{66AE5E0E-DE16-4AB5-8ED5-A5FFE8097D45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66AE5E0E-DE16-4AB5-8ED5-A5FFE8097D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66AE5E0E-DE16-4AB5-8ED5-A5FFE8097D45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4283DFF9-BDF9-4075-B66F-12DE2B022E4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4283DFF9-BDF9-4075-B66F-12DE2B022E4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4283DFF9-BDF9-4075-B66F-12DE2B022E4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4283DFF9-BDF9-4075-B66F-12DE2B022E4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +47,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{41D7CDBC-BF33-4436-A2EB-0C9C78F07175} = {A8AC3A0A-CC06-4B3A-A88F-6716F15E8FE1}
 		{66AE5E0E-DE16-4AB5-8ED5-A5FFE8097D45} = {A42203F1-113B-4A81-BCFB-4E2BF4182D1A}
+		{4283DFF9-BDF9-4075-B66F-12DE2B022E4D} = {59FDDC32-CA35-4CCA-8D2E-6508FF12ABA7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B77CD6C2-F670-455C-95BE-E6A673487273}

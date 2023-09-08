@@ -1,3 +1,4 @@
+using Nats.Contracts;
 using NATS.Client;
 using System.Text;
 
@@ -56,9 +57,10 @@ public class NatsWorkerService : IHostedService, IDisposable
                 this._logger.LogError("Connection Failed");
                 return;
             }
-            var message = await this.messageProvider.GenerateMockMessage();
-            this.serverConnection.Publish("subject.demo", Encoding.UTF8.GetBytes(message));
-            this._logger.LogInformation($"Published: {message}");
+            var messageString = await this.messageProvider.GenerateMockMessage();
+            var publishedMessage = new PublishedMessage(nameof(NatsPublisher), messageString);
+            this.serverConnection.Publish("subject.demo", Encoding.UTF8.GetBytes(publishedMessage.ToString()));
+            this._logger.LogInformation($"Published: {publishedMessage}");
         });
     }
 
