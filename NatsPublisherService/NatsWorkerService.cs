@@ -1,4 +1,5 @@
 using NATS.Client;
+using System.Text;
 
 namespace NatsPublisher;
 public class NatsWorkerService : IHostedService, IDisposable
@@ -6,7 +7,7 @@ public class NatsWorkerService : IHostedService, IDisposable
     private Timer? _timer;
     private readonly ILogger<NatsWorkerService> _logger;
     private readonly ConnectionFactory connectionFactory;
-    private IEncodedConnection? serverConnection;
+    private IConnection? serverConnection;
     private readonly MessageProvider messageProvider;
     public NatsWorkerService(ILogger<NatsWorkerService> logger, MessageProvider messageProvider)
     {
@@ -19,7 +20,7 @@ public class NatsWorkerService : IHostedService, IDisposable
     {
         try
         {
-            this.serverConnection = connectionFactory.CreateEncodedConnection();
+            this.serverConnection = connectionFactory.CreateConnection();
             this._logger.LogInformation("~ Connection established successfully");
 
             _timer = new Timer(DoWork,
@@ -56,8 +57,8 @@ public class NatsWorkerService : IHostedService, IDisposable
                 return;
             }
             var message = await this.messageProvider.GenerateMockMessage();
-            this.serverConnection.Publish("subject", message);
-            this._logger.LogInformation("Published: ", message);
+            this.serverConnection.Publish("subject.demo", Encoding.UTF8.GetBytes(message));
+            this._logger.LogInformation($"Published: {message}");
         });
     }
 
