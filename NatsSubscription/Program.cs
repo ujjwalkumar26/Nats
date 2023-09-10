@@ -1,5 +1,6 @@
 using System;
-using System.Text;
+using Contracts;
+using Nats.Contracts;
 using NATS.Client;
 
 namespace Nats.Subcription;
@@ -8,20 +9,27 @@ class NatsListenerService
     static void Main(string[] args)
     {
         // Connect to the NATS server
-        using var connection = new ConnectionFactory().CreateConnection();
-        var subject = "subject.demo";
-        var subscription = connection.SubscribeSync(subject);
-
-        Console.WriteLine($"Listening for messages on subject: {subject}");
-
-        while (true)
+        using IEncodedConnection c = new ConnectionFactory().CreateEncodedConnection();
+        c.OnSerialize = NatsSerializer.JsonSerializer;
+        c.OnDeserialize = NatsSerializer.JsonDeserializer;
+        Console.WriteLine("Connected successfully");
+        EventHandler<EncodedMessageEventArgs> eventHandler = (sender, args) =>
         {
-            var message = subscription.NextMessage();
-            if (message != null)
-            {
-                string data = Encoding.UTF8.GetString(message.Data);
-                Console.WriteLine(data);
-            }
+            // Here, obj is an instance of the object published to
+            // this subscriber.  Retrieve it through the
+            // ReceivedObject property of the arguments.
+            PublishedMessage? message = (PublishedMessage)args.ReceivedObject;
+
+            Console.WriteLine($"Received Message: {message}");
+        };
+
+        // Subscribe using the encoded message event handler
+        IAsyncSubscription s = c.SubscribeAsync("subject.*", eventHandler);
+        while (true) 
+        {
+            s.Start();
         }
+        
+
     }
 }

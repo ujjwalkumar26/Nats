@@ -1,6 +1,6 @@
+using Contracts;
 using Nats.Contracts;
 using NATS.Client;
-using System.Text;
 
 namespace NatsPublisher;
 public class NatsWorkerService : IHostedService, IDisposable
@@ -8,7 +8,7 @@ public class NatsWorkerService : IHostedService, IDisposable
     private Timer? _timer;
     private readonly ILogger<NatsWorkerService> _logger;
     private readonly ConnectionFactory connectionFactory;
-    private IConnection? serverConnection;
+    private IEncodedConnection? serverConnection;
     private readonly MessageProvider messageProvider;
     public NatsWorkerService(ILogger<NatsWorkerService> logger, MessageProvider messageProvider)
     {
@@ -21,7 +21,10 @@ public class NatsWorkerService : IHostedService, IDisposable
     {
         try
         {
-            this.serverConnection = connectionFactory.CreateConnection();
+            this.serverConnection = connectionFactory.CreateEncodedConnection();
+            serverConnection.OnSerialize = NatsSerializer.JsonSerializer;
+            serverConnection.OnDeserialize = NatsSerializer.JsonSerializer;
+
             this._logger.LogInformation("~ Connection established successfully");
 
             _timer = new Timer(DoWork,
@@ -58,8 +61,12 @@ public class NatsWorkerService : IHostedService, IDisposable
                 return;
             }
             var messageString = await this.messageProvider.GenerateMockMessage();
-            var publishedMessage = new PublishedMessage(nameof(NatsPublisher), messageString);
-            this.serverConnection.Publish("subject.demo", Encoding.UTF8.GetBytes(publishedMessage.ToString()));
+            var publishedMessage = new PublishedMessage() 
+            { 
+                Publisher = typeof(NatsWorkerService).AssemblyQualifiedName ?? string.Empty,
+                Content = messageString
+            };
+            this.serverConnection.Publish("subject.demo", publishedMessage);
             this._logger.LogInformation($"Published: {publishedMessage}");
         });
     }
