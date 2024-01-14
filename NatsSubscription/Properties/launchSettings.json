@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "NatsSubscriber": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

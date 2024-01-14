@@ -1,0 +1,15 @@
+services:
+  nats-server:
+    image: nats
+  publisher:
+    build:
+      context: .
+      dockerfile: ./NatsPublisherService/Dockerfile
+    depends_on:
+      - "nats-server"
+  listener:
+    build:
+      context: .
+      dockerfile: ./NatsSubscription/Dockerfile
+    depends_on:
+      - "nats-server"
